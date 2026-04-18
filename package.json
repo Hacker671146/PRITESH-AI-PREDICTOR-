@@ -1,0 +1,52 @@
+{
+  "currentPrediction": {
+    "period": "202604180012",
+    "prediction": "BIG",
+    "confidence": "76.50%",
+    "model": "Adaptive Online AI",
+    "source": "WinGo_1M + gradient descent learning",
+    "marketState": "ACTIVE",
+    "timestamp": "2026-04-18T12:34:56.789Z"
+  },
+  "performance": {
+    "totalTrades": 42,
+    "totalWins": 28,
+    "totalLosses": 14,
+    "winRate": "66.67%",
+    "currentLevel": 1,
+    "currentMultiplier": 1
+  },
+  "last10Predictions": [
+    {
+      "period": "202604180011",
+      "sticker": "✅ WIN",
+      "prediction": "BIG",
+      "actual": "BIG",
+      "actualNumber": 7,
+      "result": "WIN",
+      "confidence": "72.30%",
+      "model": "Adaptive AI",
+      "time": "12:33:45"
+    },
+    {
+      "period": "202604180010",
+      "sticker": "❌ LOSS",
+      "prediction": "SMALL",
+      "actual": "BIG",
+      "actualNumber": 9,
+      "result": "LOSS",
+      "confidence": "68.20%",
+      "model": "Adaptive AI",
+      "time": "12:32:45"
+    }
+    // ... up to 10 entries
+  ],
+  "systemStatus": {
+    "activeModel": "Adaptive AI (8 features, online learning)",
+    "dataPoints": 42,
+    "marketRegime": "LEARNING",
+    "lastUpdate": "12:34:56",
+    "learningRate": 0.1,
+    "apiConnected": true
+  }
+}
