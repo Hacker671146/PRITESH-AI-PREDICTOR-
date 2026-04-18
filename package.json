@@ -1,0 +1,19 @@
+{
+  "name": "pritesh-ai-predictor",
+  "version": "2.0.0",
+  "description": "BIG/SMALL predictor with adaptive AI for WinGo 1M lottery",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.0"
+  },
+  "keywords": ["prediction", "ai", "lottery", "express", "render"],
+  "author": "PRITESH AI PREDICTOR",
+  "license": "MIT"
+}
