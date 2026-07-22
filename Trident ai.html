@@ -1,0 +1,997 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TRIDENT V22 | LEVEL 1 + LEVEL 2</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Outfit:wght@300;600;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --lite-pink:#FFD1DC;
+    --lite-purple:#E0BBE4;
+    --deep-purple:#9575CD;
+    --neon-green:#00E676;
+    --red:#FF5252;
+    --glass:rgba(255,255,255,0.85);
+    --gradient-main:linear-gradient(135deg,var(--lite-pink) 0%,var(--lite-purple) 100%);
+    --purple-pink-grad:linear-gradient(to bottom,var(--deep-purple),#EC4899);
+    --green-grad:linear-gradient(to bottom,#00BFA5,#00E676);
+}
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+}
+
+body{
+    margin:0;
+    background:var(--gradient-main);
+    min-height:100vh;
+    font-family:'Outfit',sans-serif;
+    display:flex;
+    justify-content:center;
+    overflow-x:hidden;
+}
+
+#loginScreen{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:var(--gradient-main);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.login-card{
+    width:88%;
+    max-width:400px;
+    padding:45px 30px;
+    background:var(--glass);
+    border-radius:50px;
+    backdrop-filter:blur(25px);
+    border:2px solid white;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(120,70,180,0.18);
+}
+
+.logo-container{
+    width:80px;
+    height:80px;
+    margin:0 auto 25px;
+    background:linear-gradient(45deg,var(--deep-purple),var(--lite-pink));
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.logo-icon{
+    font-family:'Syncopate';
+    color:white;
+    font-size:32px;
+}
+
+.login-card input{
+    width:100%;
+    padding:18px;
+    border-radius:20px;
+    border:1px solid #E5E7EB;
+    margin-bottom:20px;
+    text-align:center;
+    font-size:16px;
+    outline:none;
+}
+
+.btn-login{
+    width:100%;
+    padding:20px;
+    border-radius:20px;
+    border:none;
+    background:linear-gradient(90deg,var(--deep-purple),#7E57C2);
+    color:white;
+    font-family:'Syncopate';
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#dashboard{
+    display:none;
+    width:100%;
+    max-width:500px;
+    padding:25px 20px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.brand{
+    font-family:'Syncopate';
+    font-size:11px;
+    color:var(--deep-purple);
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    background:var(--neon-green);
+    border-radius:50%;
+    display:inline-block;
+    margin-right:6px;
+    box-shadow:0 0 10px var(--neon-green);
+}
+
+.accuracy{
+    font-family:'Bebas Neue';
+    font-size:30px;
+    color:var(--neon-green);
+    text-shadow:0 2px 10px rgba(0,230,118,0.25);
+}
+
+.hero-card{
+    background:white;
+    border-radius:40px;
+    padding:40px 20px;
+    text-align:center;
+    margin-bottom:20px;
+    box-shadow:0 15px 35px rgba(100,60,150,0.12);
+}
+
+.period-box{
+    font-size:11px;
+    font-weight:900;
+    color:#94A3B8;
+    letter-spacing:1px;
+}
+
+.signal-display{
+    font-family:'Bebas Neue';
+    font-size:92px;
+    margin:15px 0;
+    background:var(--purple-pink-grad);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    line-height:1;
+}
+
+.ai-status{
+    font-size:9px;
+    font-weight:900;
+    color:#64748B;
+    line-height:1.5;
+    min-height:28px;
+}
+
+.hud-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.hud-item{
+    background:var(--glass);
+    padding:18px 5px;
+    border-radius:25px;
+    text-align:center;
+    border:1px solid white;
+    box-shadow:0 6px 14px rgba(80,50,130,0.06);
+}
+
+.hud-item.win{
+    border-bottom:4px solid var(--neon-green);
+}
+
+.hud-item.loss{
+    border-bottom:4px solid var(--red);
+}
+
+.hud-item .val{
+    font-family:'Bebas Neue';
+    font-size:30px;
+    display:block;
+    color:#3D315B;
+}
+
+.hud-item .lbl{
+    font-size:9px;
+    font-weight:900;
+    color:#64748B;
+}
+
+.analysis-card{
+    background:var(--glass);
+    border-radius:28px;
+    padding:16px;
+    border:1px solid white;
+    margin-bottom:20px;
+    box-shadow:0 6px 14px rgba(80,50,130,0.06);
+}
+
+.analysis-title{
+    font-size:10px;
+    font-weight:900;
+    color:var(--deep-purple);
+    letter-spacing:1px;
+    text-align:center;
+    margin-bottom:12px;
+}
+
+.analysis-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.analysis-item{
+    background:white;
+    border-radius:16px;
+    padding:10px;
+    text-align:center;
+}
+
+.analysis-item span{
+    display:block;
+}
+
+.analysis-item .small-label{
+    color:#94A3B8;
+    font-size:8px;
+    font-weight:900;
+}
+
+.analysis-item .analysis-value{
+    font-family:'Bebas Neue';
+    font-size:23px;
+    color:#4B3F72;
+}
+
+.history-card{
+    background:var(--glass);
+    border-radius:35px;
+    height:350px;
+    padding:20px 15px;
+    border:2px solid white;
+    overflow-y:auto;
+}
+
+.history-head{
+    display:grid;
+    grid-template-columns:1fr 1fr 1.2fr 1fr;
+    font-size:9px;
+    font-weight:900;
+    color:var(--deep-purple);
+    margin-bottom:15px;
+    text-align:center;
+}
+
+.row{
+    background:white;
+    padding:14px 10px;
+    border-radius:20px;
+    display:grid;
+    grid-template-columns:1fr 1fr 1.2fr 1fr;
+    margin-bottom:10px;
+    text-align:center;
+    font-size:11px;
+    font-weight:700;
+    box-shadow:0 4px 10px rgba(70,40,100,0.05);
+}
+
+.txt-purple{
+    color:var(--deep-purple);
+}
+
+.txt-pink{
+    color:#EC4899;
+}
+
+.tag-win{
+    color:var(--neon-green);
+    font-weight:900;
+}
+
+.tag-loss{
+    color:var(--red);
+    font-weight:900;
+}
+
+.footer-note{
+    text-align:center;
+    font-size:9px;
+    color:#6B7280;
+    font-weight:700;
+    margin-top:14px;
+    padding-bottom:15px;
+}
+
+@media(max-width:360px){
+    .signal-display{
+        font-size:75px;
+    }
+
+    .row{
+        font-size:9px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+    <div class="login-card">
+        <div class="logo-container">
+            <span class="logo-icon">T</span>
+        </div>
+
+        <h2 style="font-family:'Syncopate';font-size:18px;margin-bottom:25px;color:var(--deep-purple)">
+            TRIDENT AI
+        </h2>
+
+        <input
+            type="password"
+            id="keyInput"
+            placeholder="ACCESS KEY"
+            autocomplete="off"
+        >
+
+        <button class="btn-login" onclick="startApp()">
+            VERIFY & ENTER
+        </button>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+    <div class="header">
+        <div class="brand">
+            <span class="status-dot"></span>
+            PRITESH MODS
+        </div>
+
+        <div class="accuracy" id="accDisplay">0.0%</div>
+    </div>
+
+    <div class="hero-card">
+        <div class="period-box">
+            TARGET PERIOD: <span id="periodId">------</span>
+        </div>
+
+        <div class="signal-display" id="mainSignal">SYNC</div>
+
+        <div class="ai-status" id="statusText">
+            INITIALIZING LEVEL 1 + LEVEL 2...
+        </div>
+    </div>
+
+    <div class="hud-grid">
+        <div class="hud-item">
+            <span class="val" id="st-total">0</span>
+            <span class="lbl">TOTAL</span>
+        </div>
+
+        <div class="hud-item win">
+            <span class="val" id="st-wins">0</span>
+            <span class="lbl">WINS</span>
+        </div>
+
+        <div class="hud-item loss">
+            <span class="val" id="st-loss">0</span>
+            <span class="lbl">LOSS</span>
+        </div>
+    </div>
+
+    <div class="analysis-card">
+        <div class="analysis-title">LEVEL 1 + LEVEL 2 ANALYSIS</div>
+
+        <div class="analysis-grid">
+            <div class="analysis-item">
+                <span class="small-label">P(BIG)</span>
+                <span class="analysis-value" id="probBig">50.0%</span>
+            </div>
+
+            <div class="analysis-item">
+                <span class="small-label">P(SMALL)</span>
+                <span class="analysis-value" id="probSmall">50.0%</span>
+            </div>
+
+            <div class="analysis-item">
+                <span class="small-label">CONFIDENCE</span>
+                <span class="analysis-value" id="confidenceVal">50.0%</span>
+            </div>
+
+            <div class="analysis-item">
+                <span class="small-label">LEVEL 2 SAMPLES</span>
+                <span class="analysis-value" id="transitionSamples">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="history-card">
+        <div class="history-head">
+            <span>PERIOD</span>
+            <span>PREDICT</span>
+            <span>ACTUAL</span>
+            <span>RESULT</span>
+        </div>
+
+        <div id="historyFeed"></div>
+    </div>
+
+    <div class="footer-note">
+        Statistical tracker only. Accuracy is calculated from real tracked results.
+    </div>
+
+</div>
+
+<script>
+/* ==========================================================================
+   TRIDENT V22
+   LEVEL 1 + LEVEL 2 STATISTICAL TRACKER
+
+   LEVEL 1:
+   - Weighted recent BIG/SMALL frequency.
+
+   LEVEL 2:
+   - Transition probability based on previous outcome.
+   - Uses Level 1 result as Bayesian-style smoothing prior.
+
+   Important:
+   - This code does not guarantee future results.
+   - Dashboard accuracy comes only from actual tracked wins/losses.
+   ========================================================================== */
+
+
+/* =========================
+   CONFIG
+   ========================= */
+
+const API_URL =
+    "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
+
+const CONFIG = {
+    pollInterval: 2500,
+    maxHistory: 80,
+    level1Window: 30,
+    minTransitionSamples: 7,
+    priorStrength: 5,
+    lowConfidenceThreshold: 0.56,
+    maxRows: 30
+};
+
+
+/* =========================
+   APP STATE
+   ========================= */
+
+let stats = {
+    total: 0,
+    wins: 0,
+    loss: 0
+};
+
+let lastProcessedPeriod = null;
+let pendingPrediction = null;
+let analyzing = false;
+let historyRows = [];
+
+
+/* =========================
+   HELPER FUNCTIONS
+   ========================= */
+
+function getIssue(item) {
+    return String(item?.issueNumber || item?.issue || "");
+}
+
+function getNumber(item) {
+    const value = parseInt(item?.number, 10);
+    return Number.isFinite(value) ? value : 0;
+}
+
+function getCategory(number) {
+    return number >= 5 ? "BIGG" : "SMALL";
+}
+
+function getNextPeriod(issue) {
+    try {
+        return (BigInt(issue) + 1n).toString();
+    } catch (error) {
+        return "------";
+    }
+}
+
+function formatPercent(probability) {
+    return `${(probability * 100).toFixed(1)}%`;
+}
+
+
+/* =========================
+   LEVEL 1 ENGINE
+   Recent weighted probability
+   ========================= */
+
+function level1Analysis(records) {
+    const recentRecords = records.slice(0, CONFIG.level1Window);
+
+    if (recentRecords.length === 0) {
+        return {
+            prediction: "BIGG",
+            bigProbability: 0.50,
+            smallProbability: 0.50,
+            confidence: 0.50,
+            method: "LEVEL 1 WARMUP"
+        };
+    }
+
+    let bigWeight = 0;
+    let smallWeight = 0;
+
+    recentRecords.forEach((item, index) => {
+        const number = getNumber(item);
+        const category = getCategory(number);
+
+        /* Newest record gets the highest weight */
+        const weight = Math.exp(-0.16 * index);
+
+        if (category === "BIGG") {
+            bigWeight += weight;
+        } else {
+            smallWeight += weight;
+        }
+    });
+
+    const totalWeight = bigWeight + smallWeight;
+
+    const bigProbability =
+        totalWeight > 0 ? bigWeight / totalWeight : 0.50;
+
+    const smallProbability =
+        totalWeight > 0 ? smallWeight / totalWeight : 0.50;
+
+    const prediction =
+        bigProbability >= smallProbability ? "BIGG" : "SMALL";
+
+    return {
+        prediction,
+        bigProbability,
+        smallProbability,
+        confidence: Math.max(bigProbability, smallProbability),
+        method: "LEVEL 1"
+    };
+}
+
+
+/* =========================
+   LEVEL 2 ENGINE
+   One-step transition model
+   ========================= */
+
+function level2Analysis(records) {
+    const level1 = level1Analysis(records);
+
+    if (records.length < 12) {
+        return {
+            ...level1,
+            transitionSamples: 0,
+            method: "LEVEL 1 WARMUP"
+        };
+    }
+
+    const categories = records
+        .slice(0, CONFIG.maxHistory)
+        .map(item => getCategory(getNumber(item)));
+
+    const latestCategory = categories[0];
+
+    let nextBig = 0;
+    let nextSmall = 0;
+    let transitionSamples = 0;
+
+    /*
+       Data format is newest -> oldest.
+
+       Example:
+       categories[i + 1] = historical previous output
+       categories[i]     = output observed after it
+    */
+
+    for (let i = 0; i < categories.length - 1; i++) {
+        const oldPreviousCategory = categories[i + 1];
+        const oldNextCategory = categories[i];
+
+        if (oldPreviousCategory === latestCategory) {
+            transitionSamples++;
+
+            if (oldNextCategory === "BIGG") {
+                nextBig++;
+            } else {
+                nextSmall++;
+            }
+        }
+    }
+
+    /*
+       If insufficient Level 2 samples:
+       Use Level 1 output.
+    */
+    if (transitionSamples < CONFIG.minTransitionSamples) {
+        return {
+            ...level1,
+            transitionSamples,
+            method: "LEVEL 1 | LEVEL 2 BUILDING"
+        };
+    }
+
+    /*
+       Bayesian-style smoothing:
+       Level 1 weighted probability is used as a prior.
+    */
+    const bigProbability =
+        (nextBig + CONFIG.priorStrength * level1.bigProbability) /
+        (transitionSamples + CONFIG.priorStrength);
+
+    const smallProbability =
+        (nextSmall + CONFIG.priorStrength * level1.smallProbability) /
+        (transitionSamples + CONFIG.priorStrength);
+
+    const prediction =
+        bigProbability >= smallProbability ? "BIGG" : "SMALL";
+
+    const confidence =
+        Math.max(bigProbability, smallProbability);
+
+    return {
+        prediction,
+        bigProbability,
+        smallProbability,
+        confidence,
+        transitionSamples,
+        latestCategory,
+        method: "LEVEL 2 TRANSITION"
+    };
+}
+
+
+/* =========================
+   MAIN PREDICTION FUNCTION
+   ========================= */
+
+function getPrediction(records) {
+    const analysis = level2Analysis(records);
+
+    let status = "LEVEL 1 + LEVEL 2 ACTIVE";
+
+    if (analysis.method.includes("WARMUP")) {
+        status = "LEVEL 1 WARMUP ACTIVE";
+    }
+
+    if (analysis.method.includes("BUILDING")) {
+        status = "LEVEL 1 ACTIVE | LEVEL 2 BUILDING";
+    }
+
+    if (analysis.confidence < CONFIG.lowConfidenceThreshold) {
+        status = "LOW CONFIDENCE | RANDOM MARKET RISK";
+    }
+
+    return {
+        ...analysis,
+        status
+    };
+}
+
+
+/* =========================
+   API FETCH
+   ========================= */
+
+async function fetchHistory() {
+    const response = await fetch(
+        `${API_URL}?ts=${Date.now()}`,
+        {
+            method: "GET",
+            cache: "no-store",
+            headers: {
+                "Accept": "application/json"
+            }
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+    }
+
+    const json = await response.json();
+
+    const list = json?.data?.list || json?.list || [];
+
+    if (!Array.isArray(list)) {
+        return [];
+    }
+
+    return list.filter(item => getIssue(item) !== "");
+}
+
+
+/* =========================
+   UI UPDATE FUNCTIONS
+   ========================= */
+
+function updateStatsUI() {
+    document.getElementById("st-total").innerText = stats.total;
+    document.getElementById("st-wins").innerText = stats.wins;
+    document.getElementById("st-loss").innerText = stats.loss;
+
+    const accuracy =
+        stats.total > 0
+            ? ((stats.wins / stats.total) * 100).toFixed(1)
+            : "0.0";
+
+    document.getElementById("accDisplay").innerText = `${accuracy}%`;
+}
+
+function updatePredictionUI(prediction, targetPeriod) {
+    const mainSignal = document.getElementById("mainSignal");
+    const statusText = document.getElementById("statusText");
+
+    document.getElementById("periodId").innerText = targetPeriod;
+
+    mainSignal.innerText = prediction.prediction;
+
+    if (prediction.prediction === "BIGG") {
+        mainSignal.style.background =
+            "linear-gradient(to bottom,#9575CD,#EC4899)";
+    } else {
+        mainSignal.style.background =
+            "linear-gradient(to bottom,#00BFA5,#00E676)";
+    }
+
+    mainSignal.style.webkitBackgroundClip = "text";
+    mainSignal.style.webkitTextFillColor = "transparent";
+
+    statusText.innerText =
+        `${prediction.status} | ${prediction.method}`;
+
+    document.getElementById("probBig").innerText =
+        formatPercent(prediction.bigProbability);
+
+    document.getElementById("probSmall").innerText =
+        formatPercent(prediction.smallProbability);
+
+    document.getElementById("confidenceVal").innerText =
+        formatPercent(prediction.confidence);
+
+    document.getElementById("transitionSamples").innerText =
+        prediction.transitionSamples || 0;
+}
+
+function renderHistory() {
+    const feed = document.getElementById("historyFeed");
+
+    if (!historyRows.length) {
+        feed.innerHTML = `
+            <div style="
+                text-align:center;
+                color:#64748B;
+                font-size:11px;
+                padding:35px 10px;
+                font-weight:700;
+            ">
+                Waiting for next result verification...
+            </div>
+        `;
+        return;
+    }
+
+    feed.innerHTML = historyRows.map(row => {
+        const predictionClass =
+            row.prediction === "BIGG"
+                ? "txt-purple"
+                : "txt-pink";
+
+        const resultClass =
+            row.win
+                ? "tag-win"
+                : "tag-loss";
+
+        return `
+            <div class="row">
+                <span>#${row.issue.slice(-4)}</span>
+                <span class="${predictionClass}">${row.prediction}</span>
+                <span>${row.actual} (${row.number})</span>
+                <span class="${resultClass}">
+                    ${row.win ? "WIN" : "LOSS"}
+                </span>
+            </div>
+        `;
+    }).join("");
+}
+
+function addHistoryRow(row) {
+    historyRows.unshift(row);
+
+    if (historyRows.length > CONFIG.maxRows) {
+        historyRows.pop();
+    }
+
+    renderHistory();
+}
+
+
+/* =========================
+   RESULT EVALUATION
+   ========================= */
+
+function evaluatePendingPrediction(latestRecord) {
+    if (!pendingPrediction) return;
+
+    const latestIssue = getIssue(latestRecord);
+
+    /*
+       Prevents same period from evaluating
+       the prediction multiple times.
+    */
+    if (latestIssue === pendingPrediction.sourceIssue) {
+        return;
+    }
+
+    const actualNumber = getNumber(latestRecord);
+    const actualCategory = getCategory(actualNumber);
+
+    const win =
+        pendingPrediction.prediction === actualCategory;
+
+    stats.total++;
+
+    if (win) {
+        stats.wins++;
+    } else {
+        stats.loss++;
+    }
+
+    updateStatsUI();
+
+    addHistoryRow({
+        issue: latestIssue,
+        prediction: pendingPrediction.prediction,
+        actual: actualCategory,
+        number: actualNumber,
+        win
+    });
+
+    pendingPrediction = null;
+}
+
+
+/* =========================
+   ENGINE LOOP
+   ========================= */
+
+async function processEngine() {
+    if (analyzing) return;
+
+    analyzing = true;
+
+    try {
+        const list = await fetchHistory();
+
+        if (!list || list.length < 10) {
+            document.getElementById("statusText").innerText =
+                "WAITING FOR API HISTORY...";
+            return;
+        }
+
+        const latest = list[0];
+        const latestIssue = getIssue(latest);
+
+        /*
+           First API sync:
+           Make prediction only.
+           Do not evaluate because no prior prediction exists.
+        */
+        if (lastProcessedPeriod === null) {
+            const prediction = getPrediction(list);
+            const targetPeriod = getNextPeriod(latestIssue);
+
+            pendingPrediction = {
+                sourceIssue: latestIssue,
+                targetIssue: targetPeriod,
+                prediction: prediction.prediction,
+                confidence: prediction.confidence
+            };
+
+            updatePredictionUI(prediction, targetPeriod);
+
+            lastProcessedPeriod = latestIssue;
+
+            return;
+        }
+
+        /*
+           A newly published issue is detected.
+           First evaluate old prediction,
+           then generate a new prediction.
+        */
+        if (latestIssue !== lastProcessedPeriod) {
+            evaluatePendingPrediction(latest);
+
+            const prediction = getPrediction(list);
+            const targetPeriod = getNextPeriod(latestIssue);
+
+            pendingPrediction = {
+                sourceIssue: latestIssue,
+                targetIssue: targetPeriod,
+                prediction: prediction.prediction,
+                confidence: prediction.confidence
+            };
+
+            updatePredictionUI(prediction, targetPeriod);
+
+            lastProcessedPeriod = latestIssue;
+        }
+
+    } catch (error) {
+        console.error("API / Engine Error:", error);
+
+        document.getElementById("statusText").innerText =
+            "API CONNECTION ERROR | RETRYING...";
+    } finally {
+        analyzing = false;
+    }
+}
+
+
+/* =========================
+   LOGIN / APP START
+   ========================= */
+
+function startApp() {
+    const key = document.getElementById("keyInput").value.trim();
+
+    if (key.length < 3) {
+        alert("Please enter a valid access key.");
+        return;
+    }
+
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+
+    initEngine();
+}
+
+function initEngine() {
+    updateStatsUI();
+    renderHistory();
+
+    document.getElementById("mainSignal").innerText = "SYNC";
+    document.getElementById("statusText").innerText =
+        "INITIALIZING LEVEL 1 + LEVEL 2 ENGINE...";
+
+    processEngine();
+
+    setInterval(processEngine, CONFIG.pollInterval);
+}
+
+
+/* Enter key support */
+document.getElementById("keyInput").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        startApp();
+    }
+});
+</script>
+
+</body>
+</html> 
